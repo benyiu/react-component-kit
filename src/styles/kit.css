@@ -1,0 +1,18 @@
+/*
+ * The kit deliberately uses the host application's visual-token vocabulary
+ * (--primary, --border, --text-secondary, and related values).  CDD keeps
+ * its established stylesheet during the first migration; future consumers
+ * may import this entry point and layer their own application rules after it.
+ */
+@import "./base.css";
+@import "./chrome.css";
+@import "./auth.css";
+@import "./form-fields.css";
+@import "./form-actions.css";
+@import "./tab-form.css";
+@import "./pull-indicator.css";
+@import "./lists.css";
+@import "./profile.css";
+@import "./settings.css";
+@import "./change-requests.css";
+@import "./responsive.css";

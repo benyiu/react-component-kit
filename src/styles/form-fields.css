@@ -1,0 +1,193 @@
+        /* FormWidgets are rendered inside both the original client form and
+           factory-created TabForms.  Keep their presentation tied to the
+           reusable TabForm shell rather than to an individual feature panel. */
+        #cddFormPanel .f-section, .tf-panel .f-section { margin-bottom: 24px; }
+        #cddFormPanel .f-section-title, .tf-panel .f-section-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+        #cddFormPanel hr.f-separator, .tf-panel hr.f-separator { border: none; border-top: 1px dashed var(--border); margin: 12px 0; }
+        #cddFormPanel .f-field-row, .tf-panel .f-field-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; flex-wrap: wrap; }
+        #cddFormPanel .f-field-row.cols-2 > .f-field, .tf-panel .f-field-row.cols-2 > .f-field { flex: 1 1 200px; }
+        #cddFormPanel .f-field-row.f-field-full > .f-field, .tf-panel .f-field-row.f-field-full > .f-field { flex: 1 1 100%; }
+        #cddFormPanel .f-field, .tf-panel .f-field { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+        #cddFormPanel .f-field label, .tf-panel .f-field label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+        #cddFormPanel .f-field input, #cddFormPanel .f-field textarea, #cddFormPanel .f-field select,
+        .tf-panel .f-field input, .tf-panel .f-field textarea, .tf-panel .f-field select {
+            width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px;
+            font-size: 16px; font-family: inherit; background: var(--surface);
+            transition: border-color 0.15s; box-sizing: border-box; min-width: 0; max-width: 100%;
+        }
+        #cddFormPanel .f-field input:focus, #cddFormPanel .f-field textarea:focus, #cddFormPanel .f-field select:focus,
+        .tf-panel .f-field input:focus, .tf-panel .f-field textarea:focus, .tf-panel .f-field select:focus {
+            outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37,99,235,0.12);
+        }
+        /* Match select height to input in form fields */
+        #cddFormPanel .f-field select, .tf-panel .f-field select,
+        #cmPanelInfo .f-field select,
+        #cmMemberFormOverlay .f-field select, #cmInviteFormOverlay .f-field select,
+        #cmRoleFormOverlay .f-field select {
+            height: 42px; line-height: 1.4;
+        }
+        /* Native date controls can keep an intrinsic minimum width on iOS/WebKit.
+           Force them to respect the width of their form field. */
+        #cddFormPanel input[type="date"], .tf-panel input[type="date"], #cmPanelInfo input[type="date"],
+        #cmMemberFormOverlay input[type="date"], #cmInviteFormOverlay input[type="date"] {
+            display: block; width: 100% !important; min-width: 0 !important;
+            max-width: 100% !important; box-sizing: border-box !important;
+            -webkit-min-logical-width: 0;
+        }
+        #cddFormPanel .f-field textarea, .tf-panel .f-field textarea { resize: vertical; min-height: 60px; }
+        #cddFormPanel .f-field input[type="color"], .tf-panel .f-field input[type="color"] { height: 42px; padding: 4px; cursor: pointer; }
+        #cddFormPanel .f-option-group, .tf-panel .f-option-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        #cddFormPanel .f-option-group label.f-ilabel, .tf-panel .f-option-group label.f-ilabel { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; color: var(--text); font-weight: 400; }
+        #cddFormPanel .f-option-group input[type=radio], #cddFormPanel .f-option-group input[type=checkbox], .tf-panel .f-option-group input[type=radio], .tf-panel .f-option-group input[type=checkbox] { width: auto; margin: 0; accent-color: var(--primary); }
+        /* ===== Company detail form: editable fields mirror client form (#cddFormPanel) styling ===== */
+        #cmPanelInfo .f-section { margin-bottom: 24px; }
+        #cmPanelInfo .f-section-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+        #cmPanelInfo hr.f-separator { border: none; border-top: 1px dashed var(--border); margin: 12px 0; }
+        #cmPanelInfo .f-field-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; flex-wrap: wrap; }
+        #cmPanelInfo .f-field-row.cols-2 > .f-field { flex: 1 1 200px; }
+        #cmPanelInfo .f-field-row.f-field-full > .f-field { flex: 1 1 100%; }
+        #cmPanelInfo .f-field { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+        #cmPanelInfo .f-field label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+        #cmPanelInfo .f-field input, #cmPanelInfo .f-field textarea, #cmPanelInfo .f-field select {
+            width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px;
+            font-size: 16px; font-family: inherit; background: var(--surface);
+            transition: border-color 0.15s; box-sizing: border-box; min-width: 0; max-width: 100%;
+        }
+        #cmPanelInfo .f-field input:focus, #cmPanelInfo .f-field textarea:focus, #cmPanelInfo .f-field select:focus {
+            outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37,99,235,0.12);
+        }
+        #cmPanelInfo .f-field textarea { resize: vertical; min-height: 60px; }
+        #cmPanelInfo .f-option-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        #cmPanelInfo .f-option-group label.f-ilabel { display: flex; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; color: var(--text); font-weight: 400; }
+        #cmPanelInfo .f-option-group input[type=radio], #cmPanelInfo .f-option-group input[type=checkbox] { width: auto; margin: 0; accent-color: var(--primary); }
+        #cmPanelInfo .f-breg-invalid, #cmPanelInfo .f-breg-invalid label, #cmPanelInfo .f-breg-invalid input { color: #d32f2f; }
+        #cmPanelInfo .f-breg-invalid input { border-color: #d32f2f; }
+        #cmPanelInfo .f-bo-add { padding: 4px 12px; font-size: 13px; border: 1px dashed var(--primary); border-radius: 4px; background: transparent; color: var(--primary); cursor: pointer; margin-top: 4px; align-self: flex-start; }
+        #cmPanelInfo .f-bo-add:hover { background: rgba(37,99,235,0.08); }
+        #cmPanelInfo .f-addr-rm-btn { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--text-secondary); cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+        #cmPanelInfo .f-addr-rm-btn:hover { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
+        #cmPanelInfo .f-bo-list { display: flex; flex-direction: column; gap: 6px; }
+        #cmPanelInfo .f-bo-item { display: flex; gap: 6px; align-items: center; }
+        #cmPanelInfo .f-bo-item input { flex: 1; }
+        #cmPanelInfo .f-bo-item button { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface); color: var(--text-secondary); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #cmPanelInfo .f-bo-item button:hover { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
+        #cmPanelInfo .f-bo-label { font-size: 12px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; min-width: 80px; }
+        /* Company detail is mounted by createTabForm; retain the former panel inset. */
+        #cmDetailOverlay .f-form-inner { padding: 24px; }
+        /* Company member, invitation and role tab forms use the same field
+           widgets, rhythm and controls as the client/company detail forms. */
+        #cmMemberFormOverlay .f-form-inner, #cmInviteFormOverlay .f-form-inner, #cmRoleFormOverlay .f-form-inner { padding: 24px; }
+        #cmMemberFormOverlay .f-section, #cmInviteFormOverlay .f-section, #cmRoleFormOverlay .f-section { margin-bottom: 24px; }
+        #cmMemberFormOverlay .f-section-title, #cmInviteFormOverlay .f-section-title, #cmRoleFormOverlay .f-section-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+        #cmMemberFormOverlay .f-field-row, #cmInviteFormOverlay .f-field-row, #cmRoleFormOverlay .f-field-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; flex-wrap: wrap; }
+        #cmMemberFormOverlay .f-field-row.f-field-full > .f-field, #cmInviteFormOverlay .f-field-row.f-field-full > .f-field, #cmRoleFormOverlay .f-field-row.f-field-full > .f-field { flex: 1 1 100%; }
+        #cmMemberFormOverlay .f-field, #cmInviteFormOverlay .f-field, #cmRoleFormOverlay .f-field { display: flex; flex-direction: column; gap: 4px; min-width: 120px; }
+        #cmMemberFormOverlay .f-field label, #cmInviteFormOverlay .f-field label, #cmRoleFormOverlay .f-field label { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+        #cmMemberFormOverlay .f-field input, #cmMemberFormOverlay .f-field select,
+        #cmInviteFormOverlay .f-field input, #cmInviteFormOverlay .f-field select,
+        #cmRoleFormOverlay .f-field input, #cmRoleFormOverlay .f-field select {
+            width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px;
+            font-size: 16px; font-family: inherit; background: var(--surface); color: var(--text);
+            transition: border-color 0.15s; box-sizing: border-box; min-width: 0; max-width: 100%;
+        }
+        #cmMemberFormOverlay .f-field input:focus, #cmMemberFormOverlay .f-field select:focus,
+        #cmInviteFormOverlay .f-field input:focus, #cmInviteFormOverlay .f-field select:focus,
+        #cmRoleFormOverlay .f-field input:focus, #cmRoleFormOverlay .f-field select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37,99,235,0.12); }
+        #cmMemberFormOverlay .f-field select:disabled { background: var(--bg); color: var(--text-secondary); cursor: not-allowed; }
+        #cmRoleFormOverlay input[type="color"] { height: 42px; padding: 4px; cursor: pointer; }
+        /* Role names are paired translations: keep them side by side at 50/50
+           on every viewport, including the otherwise stacked mobile form. */
+        #cmRoleFormOverlay .f-field-row.cm-role-name-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; flex-wrap: nowrap; }
+        #cmRoleFormOverlay .f-field-row.cm-role-name-row > .f-field { min-width: 0; width: 100%; }
+        #cmRoleFormOverlay .cm-role-permission-section + .cm-role-permission-section { margin-top: 18px; }
+        #cmRoleFormOverlay .cm-role-permission-section-title { margin: 0 0 8px; color: var(--text-secondary); font-size: 13px; font-weight: 700; }
+        #cmRoleFormOverlay .cm-role-permission-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; }
+        #cmRoleFormOverlay .cm-role-permission-grid .f-ilabel { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; cursor: pointer; }
+        #cmRoleFormOverlay .cm-role-permission-grid .f-ilabel:has(input:checked) { border-color: var(--primary); background: rgba(37,99,235,0.07); }
+        #cmRoleFormOverlay .cm-role-permission-grid input[type="checkbox"] { width: auto; flex: 0 0 auto; margin: 0; accent-color: var(--primary); }
+        #cmPanelRoles .cm-role-list-item { appearance: none; width: 100%; margin: 0 0 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); text-align: left; font: inherit; }
+        #cmPanelRoles .cm-role-list-item.is-editable { cursor: pointer; }
+        #cmPanelRoles .cm-role-list-item.is-editable:hover { border-color: var(--primary); background: rgba(37,99,235,0.035); }
+        #cmPanelRoles .cm-role-list-item:disabled { opacity: 1; cursor: default; }
+        #cmPanelRoles .cm-role-list-head { display: flex; align-items: center; gap: 8px; }
+        #cmPanelRoles .cm-role-list-permissions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .cm-editor-hint { margin: 2px 0 0; font-size: 12px; color: var(--text-secondary); }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* ---- Form fields ---- */
+            #cddFormPanel .f-field-row, .tf-panel .f-field-row {
+                flex-direction: column; gap: 10px;
+                align-items: stretch;
+            }
+            #cddFormPanel .f-field-row.cols-2 > .f-field, .tf-panel .f-field-row.cols-2 > .f-field {
+                flex: 1 1 100%; min-width: 0;
+            }
+            #cddFormPanel .f-field, .tf-panel .f-field {
+                min-width: 0;
+            }
+
+            #cmPanelInfo .f-bo-item {
+                flex-wrap: wrap; gap: 4px;
+            }
+            #cmPanelInfo .f-bo-item .f-bo-label {
+                width: auto; min-width: auto; margin-bottom: 0; order: 1;
+            }
+            #cmPanelInfo .f-bo-item button {
+                margin-left: auto; order: 2;
+            }
+            #cmPanelInfo .f-bo-item input {
+                flex: 1 1 100%; min-width: 0; order: 3;
+            }
+
+            /* Option groups */
+            #cddFormPanel .f-option-group, .tf-panel .f-option-group {
+                gap: 8px;
+            }
+            .f-ilabel {
+                min-height: 32px; display: inline-flex; align-items: center;
+            }
+
+            /* Section title: allow add-buttons to wrap */
+            #cddFormPanel .f-section-title > div {
+                flex-wrap: wrap;
+            }
+
+            /* Form inputs larger for touch */
+            #cddFormPanel .f-field input,
+            #cddFormPanel .f-field select,
+            #cddFormPanel .f-field textarea,
+            .tf-panel .f-field input,
+            .tf-panel .f-field select,
+            .tf-panel .f-field textarea {
+                font-size: 16px;  /* prevent iOS zoom */
+                padding: 10px;
+            }
+
+            /* Company detail form — mirror client form mobile field rules */
+            #cmPanelInfo .f-field-row { flex-direction: column; gap: 10px; align-items: stretch; }
+            #cmDetailOverlay .f-form-inner { padding: 16px; }
+            #cmPanelInfo .f-field-row.cols-2 > .f-field { flex: 1 1 100%; min-width: 0; }
+            #cmPanelInfo .f-field { min-width: 0; }
+            #cmPanelInfo .f-option-group { gap: 8px; }
+            #cmPanelInfo .f-section-title > div { flex-wrap: wrap; }
+            #cmPanelInfo .f-bo-add { width: 100%; text-align: center; }
+            #cmPanelInfo .f-field input, #cmPanelInfo .f-field select, #cmPanelInfo .f-field textarea {
+                font-size: 16px; padding: 10px;
+            }
+
+            /* Member, invitation and role editor fields follow the same mobile form rules. */
+            #cmMemberFormOverlay .f-form-inner, #cmInviteFormOverlay .f-form-inner, #cmRoleFormOverlay .f-form-inner { padding: 16px; }
+            #cmMemberFormOverlay .f-field-row, #cmInviteFormOverlay .f-field-row, #cmRoleFormOverlay .f-field-row { flex-direction: column; gap: 10px; align-items: stretch; }
+            #cmMemberFormOverlay .f-field, #cmInviteFormOverlay .f-field, #cmRoleFormOverlay .f-field { min-width: 0; }
+            #cmMemberFormOverlay .f-field input, #cmMemberFormOverlay .f-field select,
+            #cmInviteFormOverlay .f-field input, #cmInviteFormOverlay .f-field select,
+            #cmRoleFormOverlay .f-field input, #cmRoleFormOverlay .f-field select { font-size: 16px; padding: 10px; }
+            /* Match select height to input on mobile (padding 10px) */
+            #cddFormPanel .f-field select, .tf-panel .f-field select,
+            #cmPanelInfo .f-field select,
+            #cmMemberFormOverlay .f-field select, #cmInviteFormOverlay .f-field select,
+            #cmRoleFormOverlay .f-field select { height: 44px; }
+            #cmRoleFormOverlay .f-field-row.cm-role-name-row { grid-template-columns: 1fr; }
+            #cmRoleFormOverlay .cm-role-permission-grid { grid-template-columns: 1fr; }
+        }

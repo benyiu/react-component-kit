@@ -1,0 +1,388 @@
+        /* ── CDD Form Panel ── */
+        #cddFormPanel {
+            max-width: 960px; margin: 0 auto; padding: 16px;
+        }
+        #cddFormPanel .f-toolbar {
+            display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+            margin-bottom: 12px;
+        }
+        #cddFormPanel .f-toolbar h1 {
+            font-size: 20px; font-weight: 700; color: var(--primary); white-space: nowrap;
+        }
+        #cddFormPanel .f-toolbar-spacer { flex: 1; }
+        /* ── Search bar ── */
+        .f-search-wrap { position: relative; flex: 1; max-width: 320px; margin: 0 12px; }
+        .f-search-input {
+            width: 100%; padding: 8px 12px 8px 36px; border: 1px solid var(--border);
+            border-radius: 6px; font-size: 16px; font-family: inherit; background: var(--bg);
+            transition: border-color 0.15s;
+        }
+        .f-search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: var(--surface); }
+        .f-search-wrap::before { content: '🔍'; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; }
+
+        /* ── Status filter ── */
+        .f-status-filter {
+            padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px;
+            font-size: 13px; font-family: inherit; background: var(--bg); color: var(--text);
+            cursor: pointer; min-width: 130px; margin-left: 8px;
+        }
+        .f-status-filter:focus { outline: none; border-color: var(--primary); }
+
+        /* ── Refresh button ── */
+        .f-refresh-btn {
+            width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
+            background: var(--bg); color: var(--text-secondary); font-size: 18px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: background 0.15s, border-color 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Hover only on devices with a real pointing device (mouse/trackpad) */
+        @media (hover: hover) {
+            .f-refresh-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        }
+        /* Tap feedback on touch devices — brief flash, auto-clears */
+        .f-refresh-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); transform: scale(0.93); }
+        .f-refresh-btn.spinning { animation: fSpin 0.6s ease-in-out; }
+
+
+        /* ── Form list table view ── */
+        /* (f-form-list-view removed — client list now uses tf-panel/tf-column structure) */
+        .f-list-table { width: 100%; border-collapse: collapse; }
+        .f-list-table th {
+            padding: 12px 16px; font-size: 12px; font-weight: 600;
+            color: var(--text-secondary); text-align: left; border-bottom: 2px solid var(--border);
+            background: #f8fafc; white-space: nowrap;
+        }
+        .f-list-table th.f-sortable {
+            cursor: pointer; user-select: none; transition: color 0.12s;
+        }
+        .f-list-table th.f-sortable:hover { color: var(--primary); }
+        .f-list-table th .f-sort-arrow { font-size: 10px; margin-left: 4px; opacity: 1; }
+        .f-list-table th.f-sort-active .f-sort-arrow { opacity: 1; color: var(--primary); }
+        .f-list-table td {
+            padding: 12px 16px; font-size: 14px; border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .f-list-table tr.f-list-row { cursor: pointer; transition: background 0.12s; }
+        .f-list-table tr.f-list-row:hover { background: #f0f4ff; }
+        .f-list-table tr.f-list-row.f-active-row { background: #e0e7ff; }
+        /* Risk rating badge */
+        .f-risk-badge {
+            display: inline-block; padding: 2px 10px; border-radius: 10px;
+            font-size: 12px; font-weight: 600; line-height: 1.5;
+        }
+        .f-risk-低 { background: #dcfce7; color: #166534; }
+        .f-risk-中 { background: #fef3c7; color: #92400e; }
+        .f-risk-高 { background: #fee2e2; color: #991b1b; }
+        /* Generic: any table row with f-active-row gets highlighted (for future lists) */
+        table tr.f-active-row { background: #e0e7ff; }
+        .f-list-table tr.f-list-row:last-child td { border-bottom: none; }
+
+        /* ── Row quick-review button ── */
+        .f-row-btn-cell { position: relative; text-align: center; }
+        .f-btn-col-head { font-size: 11px; font-weight: 600; text-align: center; padding: 6px 2px; white-space: nowrap; color: var(--text-secondary); }
+        .f-row-review-btn {
+            position: static;
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface); color: var(--text-secondary);
+            cursor: pointer; padding: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+            opacity: 1;
+            font-family: inherit;
+        }
+        .f-list-row { position: relative; }
+        /* Button is fixed in the last column (always visible). Only color-highlight on hover. */
+        @media (hover: hover) {
+            .f-row-review-btn:hover {
+                background: var(--bg); border-color: var(--primary); color: var(--primary);
+            }
+        }
+        .f-row-review-btn:active { transform: scale(0.92); }
+        .f-list-row .f-row-name { font-weight: 600; color: var(--text); }
+        .f-status-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 100px;
+            font-size: 12px; font-weight: 600; white-space: nowrap;
+        }
+        .f-status-badge.approved { background: #dcfce7; color: #166534; }
+        .f-status-badge.edd { background: #dbeafe; color: #1e40af; }
+        .f-status-badge.rejected { background: #fee2e2; color: #991b1b; }
+        .f-status-badge.pending { background: #fef3c7; color: #92400e; }
+        .f-list-row .f-row-date { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
+        .f-list-empty {
+            text-align: center; padding: 48px 20px; color: var(--text-secondary); font-size: 14px;
+        }
+        .f-list-empty .f-empty-icon { font-size: 40px; margin-bottom: 12px; }
+        /* The list shell keeps its space while an initial request is pending.
+           This replaces a misleading empty state with a clear, animated status. */
+        .f-list-empty.f-list-loading {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 12px;
+        }
+        .f-list-empty.f-list-error { color: var(--danger); }
+        .f-list-count { font-size: 13px; color: var(--text-secondary); padding: 8px 16px; border-bottom: 1px solid var(--border); background: #f8fafc; }
+        .f-list-count.f-list-count-summary { display: flex; justify-content: space-between; align-items: center; }
+        .f-list-total { font-size: 13px; color: var(--text); white-space: nowrap; }
+        .f-list-total strong { color: var(--primary); }
+
+        /* Search bar above list (replaces in-toolbar search for list panels with centered titles) */
+        .f-list-search-bar { display: flex; gap: 10px; align-items: center; flex-shrink: 0; padding: 8px 12px; background: var(--surface); border-left: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        /* Inside tab panels — flat, just bottom separator */
+        .c-tabpanel > .f-list-search-bar { border: none; border-bottom: 1px solid var(--border); border-radius: 0; }
+        /* Embedded list shell mount (createListModule) inside a tab panel — flat search bar */
+        .c-tabpanel [id$="Mount"] > .f-list-scroll > .f-list-search-bar { border: none; border-bottom: 1px solid var(--border); border-radius: 0; }
+        /* File browsers share one toolbar surface. Related files deliberately
+           omit tag-management controls, but retain the same search chrome as
+           the common-document library. */
+        .f-file-browser-toolbar { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius); }
+        /* Folder tabs protrude 11px above each category card. Keep the shared
+           file-list statistics row visually separate from that protruding
+           edge without adding an empty gap before the first response arrives. */
+        .f-file-browser-stats:not(:empty) { margin-bottom: 12px; }
+        .f-related-files { min-height: 100%; }
+        .c-tabpanel > .f-related-files { margin: 0; padding-bottom: var(--tf-panel-inset, 16px); }
+        .c-tabpanel > .f-related-files > .f-file-browser-toolbar { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius); }
+        .c-tabpanel > .f-related-files > .f-doc-grid,
+        .c-tabpanel > .f-related-files > .f-thumb-grid { margin-left: 0; margin-right: 0; }
+        /* Spacer in list search bar — expands to right-align action buttons (default for all lists) */
+        .f-list-search-bar .f-toolbar-spacer { flex: 1; min-width: 0; }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* ---- CDD Form Panel ---- */
+            /* #cddFormPanel's own phone padding is NOT here: it forms an
+               ordered pair with the ≤1024px padding rule pinned late in
+               responsive.css (see the note there), and separating the pair
+               hands phones the tablet padding. */
+            #cddFormPanel .f-toolbar {
+                flex-wrap: wrap; gap: 6px; min-width: 0;
+            }
+            /* h1 titles: full-width by default */
+            #cddFormPanel .f-toolbar h1 {
+                font-size: 16px; flex: 1 1 100%; min-width: 0;
+            }
+            /* Keep search and its icon actions on one mobile row regardless
+               of whether the list has an add action. Filters still receive
+               their own full row. Without this, a refresh-only list gave the
+               search 100% width and pushed refresh onto a second line. */
+            .f-list-search-bar { flex-wrap: wrap; gap: 6px; padding: 8px 10px; }
+            .f-list-search-bar .f-search-wrap { order: 2; margin: 0; max-width: 100%; flex: 1 1 100%; min-width: 0; }
+            .f-list-search-bar .f-status-filter { order: 3; margin-left: 0; flex: 1 1 100%; min-width: 0; }
+            .f-list-search-bar .f-toolbar-spacer { display: block; flex: 1; min-width: 4px; }
+            .f-list-search-bar:not(.f-list-has-new) .f-search-wrap { order: 1; flex: 1 1 0; max-width: none; }
+            .f-list-search-bar:not(.f-list-has-new) > .f-toolbar-spacer { display: none; }
+            .f-list-search-bar.f-list-has-new .f-search-wrap { order: 1; flex: 1 1 0; max-width: none; }
+            .f-list-search-bar.f-list-has-new > .f-status-filter { order: 4; }
+            .f-list-search-bar.f-list-has-new > .f-toolbar-spacer { display: none; }
+            /* A toolbar without a search input still needs its spacer, or its
+               icon actions are pinned to the left on phones. */
+            .f-list-search-bar:not(:has(.f-search-wrap)) > .f-toolbar-spacer { display: block; flex: 1; }
+            .f-list-search-bar > .f-list-refresh-btn { order: 2; }
+            .f-list-search-bar > .f-new-btn { order: 3; margin-left: 0; }
+            /* Lists use pull-to-refresh on touch-sized screens. Keep the
+               refresh icon for desktop where a pointer is available. */
+            .f-list-refresh-btn { display: none; }
+            .f-list-search-bar.f-list-no-pull .f-list-refresh-btn { display: inline-flex; }
+
+            /* Default spacer hidden; the edit toolbar (form-actions.css) and
+               the list-search rule above re-enable it. */
+            .f-toolbar-spacer { display: none; }
+
+            /* ---- Table → Card view ---- */
+            .f-list-table thead { display: none; }
+
+            .f-list-table, .f-list-table tbody {
+                display: block; width: 100%;
+            }
+
+            .f-list-table tr.f-list-row {
+                display: flex; flex-direction: column;
+                margin-bottom: 10px;
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                background: var(--surface);
+                overflow: visible; /* allow absolute button to show */
+                cursor: pointer;
+                transition: box-shadow 0.15s;
+            }
+            .f-list-table tr.f-list-row.f-active-row {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 1px var(--primary);
+                background: #f0f4ff;
+            }
+            .f-list-table tr.f-list-row:hover {
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+            table tr.f-active-row {
+                border-color: var(--primary);
+                box-shadow: 0 0 0 1px var(--primary);
+            }
+
+            .f-list-table td {
+                display: flex; align-items: center; gap: 8px;
+                padding: 8px 14px; border-bottom: 1px solid var(--border);
+                text-align: left !important; width: 100%; min-width: 0;
+                box-sizing: border-box;
+            }
+            .f-list-table tr.f-list-row .f-row-name {
+                min-width: 0; overflow-wrap: anywhere; word-break: break-word;
+            }
+            .f-list-table td:last-child {
+                border-bottom: none;
+            }
+            .f-list-table td::before {
+                content: attr(data-label);
+                font-weight: 600; font-size: 11px;
+                color: var(--text-secondary);
+                min-width: 70px; flex-shrink: 0;
+            }
+
+            /* Row quick-review button: always visible on mobile */
+            .f-row-btn-cell {
+                position: absolute; top: 4px; right: 4px; z-index: 2;
+                display: block !important; width: auto; padding: 0 !important;
+                border: none !important; min-width: unset;
+            }
+            .f-row-btn-cell::before { display: none !important; }
+            .f-row-review-btn {
+                position: static;
+                width: 32px; height: 32px; opacity: 1;
+            }
+
+            /* Action row in card */
+            .f-list-table td.f-row-btn-cell::before {
+                display: none;
+            }
+            .f-list-table td.f-row-btn-cell {
+                border-top: none;
+                padding: 10px 14px; justify-content: flex-start;
+            }
+
+            /* 列表卡片：移除卡片內部「行與行之間」的分隔線，僅保留卡片之間的分隔 */
+            .f-list-table tr.f-list-row > td {
+                border-bottom: none !important;
+            }
+            .f-list-table tr.f-list-row {
+                border-bottom: 1px solid var(--border);
+            }
+
+            /* ---- Client list: compact card (3 rows, 2 items per row) ---- */
+            .f-list-table tr.f-list-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            /* Mobile paired rows share one sizing rule: trailing values keep
+               only their intrinsic width, while the leading value receives
+               every remaining pixel before it wraps. Extra tracks below are
+               used only where a row has two compact badges/actions. */
+            #fClientListWrap .f-list-table tr.f-list-row {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) auto auto;
+            }
+            /* Row 1: country (left) + create-review button (right) */
+            .f-list-table tr.f-list-row td[data-col="client.list.col.country"] {
+                order: 1;
+                min-width: 0;
+                padding: 8px 4px 4px 14px;
+                font-size: 14px;
+                color: var(--text);
+                width: auto;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.country"]::before { display: none; }
+            .f-list-table tr.f-list-row td.f-row-btn-cell {
+                position: static !important;
+                order: 2;
+                flex: 0 0 36px;
+                padding: 8px 14px 4px 0 !important;
+                border: none !important;
+                border-bottom: none !important;
+                width: auto;
+            }
+            .f-list-table tr.f-list-row td.f-row-btn-cell::before { display: none !important; }
+            /* Row 2: client name (left) + review count (right) */
+            .f-list-table tr.f-list-row td[data-col="client.list.col.name"] {
+                order: 3;
+                min-width: 0;
+                padding: 4px 4px 2px 14px;
+                border-bottom: 1px solid var(--border);
+                width: auto;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.name"]::before { display: none; }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.reviewCount"] {
+                order: 4;
+                flex: 0 0 auto;
+                padding: 4px 14px 2px 4px;
+                border-bottom: 1px solid var(--border);
+                width: auto;
+                font-size: 13px;
+                color: var(--text-secondary);
+                display: block !important;
+                text-align: right !important;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.reviewCount"]::before { display: none; }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.reviewCount"]::after {
+                content: ' 審查';
+            }
+            /* Row 3: licence + its adjacent risk badge (left) + txn count (right) */
+            .f-list-table tr.f-list-row td[data-col="client.list.col.regType"] {
+                order: 5;
+                flex: 0 1 auto;
+                min-width: 0;
+                padding: 2px 4px 8px 14px;
+                border-bottom: none;
+                width: auto;
+                font-size: 12px;
+                color: var(--text-secondary);
+                justify-content: flex-start !important;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.regType"]::before { display: none; }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.riskRating"] {
+                order: 6;
+                flex: 0 0 auto;
+                padding: 2px 4px 8px;
+                border-bottom: none;
+                width: auto;
+                font-size: 12px;
+                color: var(--text-secondary);
+                display: flex !important;
+                align-items: center;
+                text-align: left !important;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.riskRating"]::before {
+                display: none;
+                content: none;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.txnCount"] {
+                order: 7;
+                flex: 0 0 auto;
+                min-width: 0;
+                margin-left: auto;
+                padding: 2px 14px 8px 4px;
+                border-bottom: none;
+                width: auto;
+                font-size: 13px;
+                color: var(--text-secondary);
+                display: block !important;
+                text-align: right !important;
+            }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.txnCount"]::before { display: none; }
+            .f-list-table tr.f-list-row td[data-col="client.list.col.txnCount"]::after {
+                content: ' 交易';
+            }
+            #fClientListWrap .f-list-table tr.f-list-row td[data-col="client.list.col.country"] { grid-column: 1 / 3; grid-row: 1; }
+            #fClientListWrap .f-list-table tr.f-list-row td.f-row-btn-cell { grid-column: 3; grid-row: 1; justify-self: end; }
+            #fClientListWrap .f-list-table tr.f-list-row td[data-col="client.list.col.name"] { grid-column: 1 / 3; grid-row: 2; }
+            #fClientListWrap .f-list-table tr.f-list-row td[data-col="client.list.col.reviewCount"] { grid-column: 3; grid-row: 2; justify-self: end; white-space: nowrap; }
+            #fClientListWrap .f-list-table tr.f-list-row td[data-col="client.list.col.regType"] { grid-column: 1; grid-row: 3; }
+            /* The schema says this column collapses (narrow: 'hidden'), and
+               the generic rule above hides it; this one stays for the classic
+               client list, whose rows are still markup. */
+            #fClientListWrap .f-list-table tr.f-list-row td[data-col="client.list.col.riskRating"] { display: none !important; }
+            #fClientListWrap .f-list-table tr.f-list-row td[data-col="client.list.col.txnCount"] { grid-column: 3; grid-row: 3; justify-self: end; white-space: nowrap; }
+
+            .f-search-input { font-size: 16px; padding: 10px 10px 10px 36px; min-width: 0; }
+
+            /* ---- List count ---- */
+            .f-list-count { font-size: 12px; padding: 6px 14px; }
+        }

@@ -1,0 +1,66 @@
+        /* What is left of the 976-line responsive monolith after the split:
+           only rules whose effect depends on composing LATE — each wins a tie
+           of equal specificity purely by source order, and each names the tie
+           above it. Everything else moved into its feature's stylesheet under
+           that file's own @media blocks. This file may only shrink, and only
+           by resolving a tie by intent (change a value, a selector, or the
+           product's mind) rather than by moving a rule and hoping.
+           responsive-ownership.test.mjs pins the line count. */
+
+        /* ── Tablet (≤1024px) ── */
+        @media (max-width: 1024px) {
+            /* Kept while everything around it moved home: at (1,0,0) this ties
+               form-actions.css's @media print rule #cddFormPanel { padding: 0 }
+               and wins only by composing later. Printing evaluates max-width
+               against the paper, and A4 portrait is 794px — a ≤1024px state —
+               so today's A4 print gets 12px panel padding from this rule.
+               Whether that is intended is a product question; until it is
+               answered, the rule stays here so the tie keeps falling the way
+               it falls today. */
+            #cddFormPanel { padding: 12px; }
+        }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* The phone half of the pinned pair: it must stay after the
+               ≤1024px rule above, or phones inherit the tablet padding. It
+               leaves this file the day the pair's print tie is resolved. */
+            #cddFormPanel { padding: 8px 8px 0; overflow: hidden; }
+
+            /* ---- Touch targets ---- */
+            /* Kept while everything around it moved home: at (0,1,0) this ties
+               .auth-btn { font-size: 15px; } (auth.css — the login card's
+               button carries class="btn btn-primary auth-btn") and the phone
+               login button renders 14px only because this rule composes later.
+               Moving it into chrome.css flips that tie. It can leave this file
+               when the tie is resolved by intent rather than by position. */
+            .btn-primary { font-size: 14px; }
+
+            /* ---- Print modal ---- */
+            /* Part of the pinned print-tie cluster (see the notes at the top
+               of this file): this block must compose after the #cddFormPanel
+               paddings above, and the 16px form-inner rule below must compose
+               after this block — it is what beats the 10px here by order. */
+            @media print {
+                .header, .mode-nav, #cddFormPanel .f-toolbar,
+                #cddFormPanel .f-list-search-bar,
+                #fClientListPanel {
+                    display: none !important;
+                }
+                .f-fullscreen-panel { position: static !important; overflow: visible !important; }
+                .tf-panel { padding: 0 !important; }
+                .tf-column { max-width: 100% !important; display: block !important; }
+                #cddFormPanel { max-width: 100%; padding: 0; }
+                #cddFormPanel .f-fullscreen-panel .f-form-container {
+                    border: none; box-shadow: none; border-radius: 0;
+                }
+                #cddFormPanel .f-form-inner { padding: 10px; }
+                #cddFormPanel input, #cddFormPanel textarea {
+                    border: 1px solid #ccc !important; background: #fff !important;
+                }
+                @page { margin: 10mm; size: A4; }
+            }
+
+            /* ---- Form inner padding ---- */
+            #cddFormPanel .f-form-inner { padding: 16px; }
+        }

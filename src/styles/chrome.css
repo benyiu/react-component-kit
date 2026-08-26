@@ -1,0 +1,247 @@
+        /* Header */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            object-fit: cover;
+            display: block;
+            flex-shrink: 0;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .header-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .card-body { padding: 20px; }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            background: var(--surface);
+            color: var(--text);
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        select.form-input {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 42px;
+            line-height: 1.4;
+            padding-right: 32px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+        }
+        .form-input::placeholder { color: #94a3b8; }
+        .form-hint {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-family: inherit;
+        }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        .tab:hover { color: var(--text); }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover:not(:disabled) { background: #e2e8f0; }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        .btn-outline:hover:not(:disabled) { background: #eff6ff; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        /* Toggle switch */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .toggle-label { font-size: 13px; color: var(--text-secondary); }
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #cbd5e1;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+        .toggle-slider:before {
+            content: '';
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .toggle input:checked + .toggle-slider { background: var(--primary); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(20px); }
+
+        /* ── Tablet (≤1024px) ── */
+        @media (max-width: 1024px) {
+            .header { padding: 12px 16px; }
+            .header-title { font-size: 16px; }
+            .container { padding: 16px; gap: 16px; }
+        }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* ---- Header ---- */
+            .header {
+                flex-direction: row; gap: 8px; padding: 10px 12px;
+                flex-wrap: nowrap; min-height: 59px;
+            }
+            .header-brand { gap: 6px; min-width: 0; }
+            .header-logo { width: 28px; height: 28px; font-size: 14px; border-radius: 6px; flex-shrink: 0; }
+            .header-title { font-size: 13px; white-space: nowrap; }
+
+            /* ---- Container ---- */
+            .container { padding: 10px; gap: 10px; }
+
+            /* ---- Touch targets ---- */
+            /* .btn-primary's phone font-size is NOT here: it ties .auth-btn
+               (auth.css, class="btn btn-primary auth-btn") at (0,1,0) and wins
+               only by sitting later in the cascade, so it stays in
+               responsive.css until someone decides which size the login
+               button's phone font is meant to be. */
+            .btn { min-height: 42px; }
+            .btn-sm { min-height: 34px; padding: 6px 12px; font-size: 12px; }
+
+            /* ---- Advanced toggle row ---- */
+            .toggle-row { gap: 8px; }
+        }

@@ -1,0 +1,390 @@
+        /* ── Client form 3-tab layout (客戶資料 / 關聯審查 / 關聯交易) ── */
+        .c-tabbar { display: flex; gap: 0; background: var(--surface); border-bottom: 1px solid var(--border); margin: 0 -32px 18px; padding: 0 32px; overflow: hidden; position: relative; }
+        .c-tab { appearance: none; -webkit-appearance: none; border: none; background: none; cursor: pointer; padding: 12px 24px; font-size: 14px; font-weight: 500; color: var(--text-secondary); border-bottom: 3px solid transparent; margin-bottom: -1px; transition: all 0.2s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+        .c-tab:hover:not(:disabled) { color: var(--text); }
+        .c-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .c-tab:disabled { color: #c0c4cc; cursor: not-allowed; }
+        /* A pager tabbar owns one persistent underline.  It is a pseudo
+           element rather than a short-lived DOM node, so a swipe only changes
+           transform/width and cannot flash while the native border swaps. */
+        .mode-nav[data-pager-indicator] .mode-tab.active,
+        .c-tabbar[data-pager-indicator] .c-tab.active { border-bottom-color:transparent; }
+        .mode-nav[data-pager-indicator]::after,
+        .c-tabbar[data-pager-indicator]::after { content:''; position:absolute; z-index:2; left:0; bottom:-1px; height:3px; width:var(--pager-indicator-width, 0px); background:var(--primary); pointer-events:none; transform:translate3d(var(--pager-indicator-left, 0px),0,0); transition:transform 270ms ease-in,width 270ms ease-in; will-change:transform,width; }
+        .mode-nav[data-pager-indicator].tab-pager-dragging::after,
+        .c-tabbar[data-pager-indicator].tab-pager-dragging::after { transition:none; }
+        .c-tabpanel { display: block; }
+
+        /* ── Tab overflow "more" button + dropdown menu ── */
+        .tab-more-btn {
+            appearance: none; -webkit-appearance: none;
+            border: none; background: none; cursor: pointer;
+            padding: 12px 16px; font-size: 16px; font-weight: 700;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent; margin-bottom: -1px;
+            font-family: inherit; white-space: nowrap; flex-shrink: 0;
+            transition: all 0.2s; letter-spacing: 1px;
+        }
+        .tab-more-btn:hover { color: var(--text); }
+        .tab-more-btn.has-active { color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-more-btn.menu-open { color: var(--primary); }
+        .tab-overflow-menu {
+            display: none; position: fixed; z-index: 10000;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            min-width: 160px; max-height: 320px; overflow-y: auto;
+            padding: 4px 0;
+        }
+        .tab-overflow-menu.open { display: block; }
+        /* Backdrop overlay shown while a tab overflow menu is open.
+           Sits below the menu (z-index 9999 < 10000) but above all page
+           content, so clicks anywhere close the menu and can't accidentally
+           hit elements behind it. */
+        .tab-overflow-overlay {
+            display: none; position: fixed; inset: 0;
+            z-index: 9999; background: rgba(15, 23, 42, 0.06);
+        }
+        .tab-overflow-overlay.open { display: block; }
+        .tab-overflow-item {
+            display: block; width: 100%; padding: 10px 16px;
+            border: none; background: none; text-align: left;
+            cursor: pointer; font-size: 14px; font-family: inherit;
+            color: var(--text); white-space: nowrap;
+            transition: background 0.15s;
+        }
+        .tab-overflow-item:hover { background: var(--hover-bg, #f0f0f0); }
+        .tab-overflow-item.active { color: var(--primary); font-weight: 500; }
+        [hidden] { display: none !important; }
+
+        .c-tabbar.tf-pager-dragging .c-tab.active { border-bottom-color:transparent; }
+        .tf-tab-swipe-indicator { position:absolute; z-index:1; bottom:-1px; height:3px; background:var(--primary); pointer-events:none; will-change:transform,width; }
+
+        /* ── Load more indicator ── */
+        .f-load-more { text-align: center; padding: 20px 16px 32px; color: var(--text-secondary); font-size: 13px; }
+        .f-load-more.f-load-end { color: #c0c4cc; }
+        .f-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: f-spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
+        @keyframes f-spin { to { transform: rotate(360deg); } }
+
+        /* ── Action buttons in client list ── */
+
+
+        /* ── Full-screen overlay panel (base) ── */
+        .f-fullscreen-panel {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            overscroll-behavior: contain;
+        }
+
+        /* ── Reusable tabform display module ──
+           tf-panel: adds four-side responsive padding so the centered column
+           isn't flush against the screen edges.
+           tf-column: centered 960px column containing toolbar + optional
+           tabbar + content. Replaces per-child max-width centering. */
+        .tf-panel {
+            padding: clamp(14px, 2.5vw, 24px);
+            /* This is added inside each tab's own scroller, rather than to the
+               outer form.  The final control can scroll fully into view without
+               reducing the viewport available to the form body. */
+            --tf-bottom-content-inset: 24px;
+        }
+        .tf-column {
+            max-width: 960px; width: 100%; margin: 0 auto;
+            display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; min-width: 0;
+        }
+        /* Factory-created tab forms own the viewport height, while their
+           desktop content remains a comfortable centered reading column. */
+        .f-fullscreen-panel.tf-viewport-form {
+            width: 100vw; height: 100dvh; min-height: 100vh; padding: 0;
+            /* A TabForm owns its horizontal edge gesture.  Prevent the
+               browser's own back-preview from being composited behind the
+               real, lower panel while the top panel is translated. */
+            touch-action: pan-y;
+            overscroll-behavior-x: none;
+        }
+        .f-fullscreen-panel.tf-viewport-form > .tf-column {
+            max-width: 960px; min-height: 100%; margin: 0 auto;
+        }
+        /* Keep the last control clear of the mobile browser edge and iPhone home
+           indicator.  This is content padding, so it must not reduce the form
+           body's available scroll height. Mobile keeps the edge-to-edge layout. */
+        @media (max-width: 768px) {
+            .f-fullscreen-panel.tf-viewport-form {
+                padding-bottom: 0;
+                /* Browser chrome can overlay the visual bottom edge on iOS.
+                   Keep the final field above both that toolbar and the Home
+                   indicator; this is applied as scrollable content padding,
+                   never as a reduction of the form body's height. */
+                --tf-bottom-content-inset: max(88px, calc(env(safe-area-inset-bottom) + 48px));
+            }
+            .f-fullscreen-panel.tf-viewport-form > .tf-column {
+                max-width: none; margin: 0;
+            }
+        }
+        /* Toolbar + tabbar share one chrome layer. On mobile the layer becomes
+           an overlay so its animation never changes the tab panel's height or
+           scroll range while native momentum scrolling is still active. */
+        .tf-column > .tf-chrome {
+            display: flex; flex-direction: column; flex: 0 0 auto; min-width: 0;
+        }
+        /* Toolbar slot — include #cddFormPanel variant to override #cddFormPanel .f-toolbar margin-bottom */
+        .tf-column > .tf-chrome > .f-toolbar-edit,
+        #cddFormPanel .tf-column > .tf-chrome > .f-toolbar-edit {
+            display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+            flex-shrink: 0; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0;
+        }
+        .tf-column > .tf-chrome > .f-toolbar-edit .f-toolbar-spacer { flex: 1; min-width: 0; }
+        /* Tabform title: always centered regardless of toolbar button count */
+        .tf-column > .tf-chrome > .f-toolbar-edit .f-edit-title {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            text-align: center; white-space: nowrap; overflow: hidden;
+            text-overflow: ellipsis; max-width: 50%;
+        }
+        /* Tabbar slot (optional — 0 tabs for list-only panels) */
+        .tf-column > .tf-chrome > .c-tabbar {
+            flex-shrink: 0; margin: 0; padding: 0 16px;
+            border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+        }
+        .tf-column > .tf-chrome > .c-tabbar:empty { display: none; }
+        /* Form container slot (scrollable) */
+        .tf-column > .f-form-container {
+            flex: 1 1 auto; min-height: 0; min-width: 0; overflow: hidden;
+            display: flex; flex-direction: column;
+            border: 1px solid var(--border); border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            background: var(--surface); box-shadow: none;
+        }
+        .tf-column > .f-form-container > .f-form-inner {
+            flex: 1 1 auto; min-height: 0; min-width: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; max-width: none;
+        }
+        /* Persistent horizontal tab track. Each tab owns its vertical scroller,
+           while the form body remains a clipped viewport for the track. */
+        .tf-panel .f-form-inner { overflow: hidden; padding: 0 !important; }
+        /* A React panel renders its body straight into .f-form-inner: there is
+           no track and no per-tab panel, so the padding the .c-tabpanel above
+           carries belongs here instead. The !important answers the rule above
+           that zeroes this element's padding — written when it was only ever a
+           clipped viewport for the track. */
+        /* A React root that failed. Deliberately plain and deliberately
+           visible: the failure mode being fixed is a region that looked
+           empty rather than broken. */
+        /* A dialog's title. Optional: most questions are one sentence and
+           need no heading, but billing's carried one before it shared this
+           dialog and the heading is what made it read as a screen. */
+        /* A composite member that stands in for a collapsed column. Hidden
+           wherever its sibling column is still shown; the media query below
+           that hides the column is what reveals it. Generic, so a schema
+           declares the relationship and no list needs a class of its own. */
+        .f-cell-when-hidden { display: none; }
+        /* A column the schema says collapses on a narrow screen. */
+        @media (max-width: 768px) {
+            .f-list-table tr.f-list-row td[data-narrow="hidden"] { display: none !important; }
+            .f-list-table tr.f-list-row .f-cell-when-hidden { display: inline-flex;
+                align-items: center; margin-left: 2px; }
+        }
+        /* A money cell. Tabular figures so digits line up down the column,
+           and the two tones for lists where the direction is the point. */
+        .f-row-amount { font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; }
+        .f-row-amount.credit { color:var(--success, #1a7f37); }
+        .f-row-amount.charge { color:var(--text); }
+        .f-confirm-box .f-confirm-title { margin:0 0 10px; font-size:16px; font-weight:600;
+            color:var(--text); }
+        .f-react-error { display:flex; align-items:center; gap:12px; padding:16px;
+            border:1px solid var(--border); border-radius:var(--radius);
+            background:var(--surface); color:var(--text); font-size:14px; }
+        .f-react-error-copy { flex:1 1 auto; }
+        .f-react-error-retry { flex:none; padding:6px 14px; border:1px solid var(--border);
+            border-radius:4px; background:var(--surface); color:var(--text); cursor:pointer; }
+        .f-react-error-retry:hover { background:var(--bg); }
+        /* The wrapper the boundary keys on. It must not introduce a box: the
+           containers these roots render into are already laid out. */
+        .f-react-root { display:contents; }
+        .tf-panel .f-form-inner.tf-body { overflow-y:auto; overflow-anchor:none; overscroll-behavior:contain; scroll-padding-bottom:var(--tf-bottom-content-inset, 24px); padding:var(--tf-panel-inset, 16px) var(--tf-panel-inset, 16px) calc(var(--tf-panel-inset, 16px) + var(--tf-bottom-content-inset, 24px)) !important; }
+        /* Mobile TabForms keep a stable, full-height scroll viewport. The
+           chrome overlays it and moves only through compositor transforms;
+           a permanent scrollable top inset protects content at scrollTop=0.
+           Once that inset has scrolled away, revealed chrome intentionally
+           overlays the current reading position instead of reflowing it. */
+        @media (max-width: 768px) {
+            .tf-panel.tf-viewport-form:not(.f-inline) > .tf-column {
+                position: relative; overflow: hidden;
+            }
+            .tf-panel.tf-viewport-form:not(.f-inline) > .tf-column > .tf-chrome {
+                position: absolute; z-index: 5; top: 0; left: 0; right: 0;
+                transform: translate3d(0, 0, 0);
+                transition: transform 200ms ease;
+                will-change: transform;
+            }
+            .tf-panel.tf-viewport-form:not(.f-inline).tf-chrome-collapsed > .tf-column > .tf-chrome {
+                transform: translate3d(0, calc(-1 * var(--tf-chrome-height, 0px)), 0);
+            }
+            /* The same reservation for a React body. Without it the chrome —
+               which is out of flow here — covers the first field. */
+            .tf-panel.tf-viewport-form:not(.f-inline) > .tf-column > .f-form-container > .f-form-inner.tf-body {
+                padding-top: calc(var(--tf-panel-inset, 16px) + var(--tf-chrome-height, 0px)) !important;
+                scroll-padding-top: var(--tf-chrome-height, 0px);
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .tf-panel.tf-viewport-form:not(.f-inline) > .tf-column > .tf-chrome {
+                transition-duration: 0.01ms;
+            }
+        }
+        #cddFormPanel .tf-panel .f-form-inner { --tf-panel-inset:16px; }
+        #cmDetailOverlay .tf-panel .f-form-inner { --tf-panel-inset:24px; }
+        #cmMemberFormOverlay .tf-panel .f-form-inner, #cmOffboardFormOverlay .tf-panel .f-form-inner, #cmInviteFormOverlay .tf-panel .f-form-inner { --tf-panel-inset:24px; }
+        @media (max-width:640px) { #cmDetailOverlay .tf-panel .f-form-inner, #cmMemberFormOverlay .tf-panel .f-form-inner, #cmOffboardFormOverlay .tf-panel .f-form-inner, #cmInviteFormOverlay .tf-panel .f-form-inner { --tf-panel-inset:16px; } }
+        /* The main pager owns the entire area below header + tab bar. Include
+           the host inset in that height so it cannot spill into document scroll. */
+        #cddFormPanel:has(> .main-tab-viewport) { height:calc(100dvh - 120px); box-sizing:border-box; overflow:hidden; }
+        /* The homepage pager is the app's scrolling surface.  Do not let a
+           short tab hand vertical gestures to document/body: on iOS that
+           produces a second rubber-band and visibly moves the entire pager. */
+        html:has(body > #cddFormPanel > .main-tab-viewport),
+        body:has(> #cddFormPanel > .main-tab-viewport) { height:100%; overflow:hidden; }
+        .main-tab-viewport { height:100%; min-height:0; overflow:hidden; }
+        .main-tab-track { display:flex; width:100%; height:100%; min-width:0; will-change:transform; }
+        .main-tab-page { flex:0 0 100%; width:100%; min-width:0; min-height:0; height:100%; box-sizing:border-box; overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+        /* Main list tabs already delegate vertical scrolling, pull-to-refresh
+           and infinite loading to createListModule's .f-list-scroll. Keeping
+           the pager page scrollable as well creates two competing rubber-band
+           surfaces on iOS and can make an indicator appear at a different
+           offset after switching tabs. Utility tabs still use the page scroll. */
+        .main-tab-page[data-main-tab="form"],
+        .main-tab-page[data-main-tab="reviews"],
+        .main-tab-page[data-main-tab="transactions"],
+        .main-tab-page[data-main-tab="risk"] { overflow-y:hidden; }
+        .main-tab-page > .f-fullscreen-panel.f-inline { height:100% !important; }
+        /* Keep one vertical scroll owner per utility tab. Fixed-height nested
+           scrollers make iOS rubber-band instead of moving the actual content. */
+        .main-tab-page > .container, .main-tab-page > #fToolsPanel, .main-tab-page > #fUnListPanel, .main-tab-page > #fDocLibraryPanel { box-sizing:border-box; height:auto; min-height:100%; max-width:none; margin:0; overflow:visible; }
+        @media (max-width:768px) { #cddFormPanel:has(> .main-tab-viewport) { height:calc(100dvh - 102px); } }
+        /* A list inside a tab scrolls with the form's inner body. This keeps
+           the tab form as the single scroll owner while the list toolbar and
+           rows move together. */
+        .tf-column > .f-form-container.tf-list-tab-active > .f-form-inner {
+            display: block; overflow-y: auto;
+        }
+        .c-tabpanel.tf-list-tab-active {
+            display: block !important;
+        }
+        .c-tabpanel.tf-list-tab-active > [data-list-module] {
+            display: block;
+        }
+        .c-tabpanel.tf-list-tab-active > [data-list-module] > .f-list-scroll {
+            overflow: visible;
+        }
+        /* List search bar slot */
+        .tf-column > .f-list-search-bar { flex-shrink: 0; }
+        /* General scroll container (used inside list views without a tf-column wrapper) */
+        .f-list-scroll { overflow-y: auto; overscroll-behavior: contain; }
+        .f-list-scroll > .f-list-search-bar { border-left: none; border-right: none; border-radius: 0; }
+        /* List shell mount wrapper generated by createListModule — flex-fills the
+           column and delegates to its .f-list-search-bar / .f-list-scroll children.
+           In tab forms the enclosing f-form-container owns the outer frame. */
+        .tf-column > [id$="Mount"] {
+            flex: 1 1 auto; min-height: 0;
+            display: flex; flex-direction: column;
+        }
+        /* Inline mode (list opened from a top tab / main nav): the panel renders
+           in normal flow and the PAGE scrolls. Mirror the proven
+           `.tf-column > .f-list-scroll` inline behaviour. Without this the Mount
+           wrapper kept display:flex + min-height:0 and clamped the inner scroll,
+           so standalone lists (reviews/txns/risk/company/admin) opened from the
+           nav could not scroll (regression from the Mount-wrapper refactor). */
+        .f-fullscreen-panel.f-inline .tf-column > [id$="Mount"] {
+            display: block; min-height: 0;
+        }
+        .f-fullscreen-panel.f-inline .tf-column > [id$="Mount"] > .f-list-shell--standalone {
+            flex: none; overflow: visible;
+        }
+
+        /* Inline mode — when triggered by a top tab (not a drill-down overlay),
+           the panel renders in normal flow so the tab bar stays visible and the page scrolls. */
+        .f-fullscreen-panel.f-inline {
+            position: relative; inset: auto; z-index: auto;
+            background: transparent; display: block; overflow: visible; height: auto; padding: 0;
+        }
+        .f-fullscreen-panel.f-inline .tf-column { display: block; max-width: none; flex: none; }
+        .f-fullscreen-panel.f-inline .tf-column > .f-list-shell--standalone {
+            flex: none; overflow: visible;
+        }
+        .f-fullscreen-panel.f-inline .tf-column > .f-form-container {
+            display: block; border: none; box-shadow: none; border-radius: 0; background: transparent;
+        }
+        /* Inline (top-level / homepage) panels never show a back button or a panel-header
+           toolbar. A createListModule list carries its own search bar inside the list shell,
+           and at the top level there is no "parent" to go back to; form/detail panels shown
+           inline (e.g. the client detail on the homepage) likewise have no back. */
+        .f-fullscreen-panel.f-inline .f-back-btn { display: none; }
+        #cddFormPanel .f-fullscreen-panel.f-inline .tf-column > .tf-chrome > .f-toolbar-edit { display: none; }
+        /* Homepage list shell — created by createListModule for every main list.
+           One shell owns every edge and corner; its search bar is an internal
+           separator rather than a second, independently-rounded surface. */
+        #cddFormPanel .f-fullscreen-panel.f-inline .f-list-shell--standalone {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--surface);
+        }
+        #cddFormPanel .f-fullscreen-panel.f-inline .f-list-shell--standalone > .f-list-search-bar {
+            border: none;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0;
+        }
+        /* Every main-page list owns its scroll surface.  This must not be
+           tied to viewport width: a desktop browser narrowed to a phone-like
+           width still emits wheel events, not touch page scrolling.  The
+           pull-to-refresh feature separately checks for an actual touch
+           device, so it remains mobile-only. */
+        #cddFormPanel .f-fullscreen-panel.f-inline {
+            height: calc(100dvh - 120px);
+            overflow: hidden;
+        }
+        #cddFormPanel .f-fullscreen-panel.f-inline .tf-column,
+        #cddFormPanel .f-fullscreen-panel.f-inline .tf-column > [id$="Mount"] {
+            height: 100%; min-height: 0;
+        }
+        #cddFormPanel .f-fullscreen-panel.f-inline .f-list-scroll {
+            height: 100%; max-height: 100%; overflow-y: auto;
+        }
+        @media (max-width: 768px) {
+            /* The main-list area fills everything below the compact 59px
+               header and ~43px mode bar.  Its only inset is the top/side
+               frame, so the list itself reaches the viewport bottom. */
+            #cddFormPanel {
+                height: calc(100dvh - 102px);
+                padding: 8px 8px 0;
+                overflow: hidden;
+            }
+            #cddFormPanel .f-fullscreen-panel.f-inline {
+                height: 100%;
+            }
+        }
+        .f-list-shell--embedded {
+            border: none;
+            border-radius: 0;
+            background: transparent;
+        }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* ---- Client form tabs (match mode-nav) ---- */
+            .c-tabbar {
+                margin-left: -16px; margin-right: -16px; padding: 0 4px;
+            }
+            .c-tab {
+                padding: 10px 14px; font-size: 13px;
+            }
+            .tab-more-btn { padding: 10px 14px; font-size: 15px; }
+        }
+
+        /* ── Very small phones (≤400px) ── */
+        @media (max-width: 400px) {
+            .c-tab { padding: 8px 10px; font-size: 12px; }
+            .tab-more-btn { padding: 8px 10px; font-size: 14px; }
+        }

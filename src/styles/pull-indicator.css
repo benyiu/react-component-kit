@@ -1,0 +1,9 @@
+            /* Pull indicators expand their owning scroll surface, then retract
+               when the corresponding refresh completes. */
+            .f-pull-indicator { height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;color:var(--text-secondary);font-size:13px;pointer-events:none;user-select:none;transition:height .25s ease-out; }
+            .f-pull-indicator.f-flip .f-pull-arrow { transform:rotate(180deg); }
+            .f-pull-spin { display:none;width:16px;height:16px;border:2px solid #e2e8f0;border-top-color:var(--primary);border-radius:50%;animation:f-spin .6s linear infinite;vertical-align:middle;margin-right:6px; }
+            .f-pull-indicator.f-refreshing { height:44px !important;animation:f-pull-bounce .34s cubic-bezier(.22,1.45,.45,1) both; }
+            .f-pull-indicator.f-refreshing .f-pull-spin { display:inline-block; }
+            .f-pull-indicator.f-refreshing .f-pull-arrow { display:none; }
+            @keyframes f-pull-bounce { 0% { transform:translateY(-12px); } 58% { transform:translateY(5px); } 100% { transform:translateY(0); } }

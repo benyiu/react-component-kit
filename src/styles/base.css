@@ -1,0 +1,51 @@
+
+        :root {
+            --bg: #f5f7fa;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --success: #16a34a;
+            --info: #0891b2;
+            --risk-high: #fee2e2;
+            --risk-high-border: #fca5a5;
+            --risk-high-text: #991b1b;
+            --risk-medium: #fef3c7;
+            --risk-medium-border: #fcd34d;
+            --risk-medium-text: #92400e;
+            --risk-low: #dbeafe;
+            --risk-low-border: #93c5fd;
+            --risk-low-text: #1e40af;
+            --risk-clear: #dcfce7;
+            --risk-clear-border: #86efac;
+            --risk-clear-text: #166534;
+            --radius: 8px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Prevent iOS Safari auto-zoom when focusing any editable form field */
+        input, textarea, select { font-size: 16px; }
+        /* iOS Safari zooms the viewport when a focused form control is below 16px. */
+        @media (max-width: 768px) {
+            input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+            select,
+            textarea,
+            [contenteditable="true"] {
+                font-size: 16px !important;
+            }
+        }
+        html { overscroll-behavior: none; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            overscroll-behavior: none;
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }

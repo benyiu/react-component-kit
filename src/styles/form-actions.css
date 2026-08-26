@@ -1,0 +1,147 @@
+        /* ── Edit view ── */
+        .f-toolbar-edit { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
+        /* Client list toolbar — handled by the inline list-scroll rule above. */
+        .f-back-btn {
+            width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
+            background: var(--bg); color: var(--text-secondary); cursor: pointer;
+            font-family: inherit; padding: 0; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s, border-color 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @media (hover: hover) {
+            .f-back-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        }
+        .f-back-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); transform: scale(0.93); }
+        .f-edit-title { font-size: 15px; font-weight: 600; color: var(--primary); }
+        .f-form-container { border-radius: 0 0 var(--radius) var(--radius); }
+        /* Action menu */
+        .f-action-menu-btn {
+            width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
+            background: var(--bg); color: var(--text-secondary); cursor: pointer; font-size: 18px;
+            font-family: inherit; padding: 0; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s, border-color 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @media (hover: hover) {
+            .f-action-menu-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        }
+        .f-action-menu-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); transform: scale(0.93); }
+        .f-action-menu-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* ── Save icon button ── */
+        .f-save-btn {
+            width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
+            background: var(--bg); color: var(--text-secondary); cursor: pointer;
+            font-family: inherit; padding: 0; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: background 0.15s, border-color 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @media (hover: hover) {
+            .f-save-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        }
+        .f-save-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); transform: scale(0.93); }
+        .f-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .f-save-btn.saving svg { animation: f-save-spin 0.8s linear infinite; }
+        @keyframes f-save-spin { to { transform: rotate(360deg); } }
+        /* Keep feather icons fully visible inside round icon buttons.
+           WebKit mis-sizes an inline <svg> placed in a flex container, which
+           can clip the glyph at the button edge — force a stable box. */
+        .f-save-btn > svg, .f-back-btn > svg, .f-new-btn > svg,
+        .f-action-menu-btn > svg {
+            display: block; width: 18px; height: 18px; flex-shrink: 0;
+        }
+
+        .f-save-btn.saved { background: var(--success); border-color: var(--success); color: #fff; }
+        @media (hover: hover) {
+            .f-save-btn.saved:hover { background: #059669; border-color: #059669; }
+        }
+        /* Red when the form has unsaved (dirty) changes */
+        .f-save-btn.dirty { background: var(--danger); border-color: var(--danger); color: #fff; }
+        @media (hover: hover) {
+            .f-save-btn.dirty:hover { background: #b91c1c; border-color: #b91c1c; }
+        }
+        .tf-submit-btn { color:var(--primary); border-color:color-mix(in srgb,var(--primary) 48%,var(--border)); }
+        @media (hover:hover) {
+            .tf-submit-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); }
+        }
+        .f-new-btn {
+            width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%;
+            background: var(--bg); color: var(--text-secondary); cursor: pointer;
+            font-family: inherit; padding: 0; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.15s, border-color 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @media (hover: hover) {
+            .f-new-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+        }
+        .f-new-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); transform: scale(0.93); }
+        .f-action-menu {
+            display: none; position: absolute; top: 100%; right: 0; margin-top: 4px;
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 1000; min-width: 140px;
+            overflow: hidden;
+        }
+        .f-action-menu.show { display: block; }
+        .f-action-menu button {
+            display: block; width: 100%; padding: 10px 16px; border: none; background: none;
+            color: var(--text); font-size: 13px; font-family: inherit; cursor: pointer;
+            text-align: left; transition: background 0.1s;
+        }
+        .f-action-menu button:hover { background: var(--bg); }
+        .f-action-menu button.danger { color: var(--danger); }
+        .f-action-menu button.danger:hover { background: #fff0f0; }
+        .f-action-menu-shield { position: fixed; inset: 0; z-index: 999; display: none; }
+        .f-action-menu-shield.show { display: block; }
+        #cddFormPanel .f-form-container {
+            background: var(--surface); border: 1px solid var(--border); border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow); overflow: hidden;
+        }
+        #cddFormPanel .f-form-inner { padding: 32px; }
+        @media (max-width: 640px) { #cddFormPanel .f-form-inner { padding: 16px; } }
+        @media print {
+            .header, .mode-nav, #cddFormPanel .f-toolbar, #fClientListPanel { display: none !important; }
+            .f-fullscreen-panel { position: static !important; overflow: visible !important; }
+            .tf-panel { padding: 0 !important; }
+            .tf-column { max-width: 100% !important; display: block !important; }
+            #cddFormPanel { max-width: 100%; padding: 0; }
+            #cddFormPanel .f-fullscreen-panel .f-form-container { border: none; box-shadow: none; border-radius: 0; }
+            #cddFormPanel .f-form-inner { padding: 20px; }
+            #cddFormPanel input, #cddFormPanel textarea { border: 1px solid #ccc !important; background: #fff !important; }
+            #cddFormPanel textarea { resize: none; }
+            @page { margin: 0; size: A4; }
+        }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* Default spacer hidden; edit toolbar & list-search re-enable (unified across ALL tabforms) */
+            .f-toolbar-edit .f-toolbar-spacer,
+            #cddFormPanel .f-toolbar-edit .f-toolbar-spacer { display: block; flex: 1; min-width: 4px; }
+
+            /* Edit toolbar: single-row — back btn left, title centered, action btns right (unified across ALL tabforms) */
+            .f-toolbar.f-toolbar-edit {
+                flex-wrap: nowrap; gap: 6px; padding: 10px 12px; min-width: 0;
+            }
+            .f-toolbar-edit .f-edit-title {
+                font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+                min-width: 0; flex-shrink: 1;
+            }
+            .f-back-btn {
+                width: 38px; height: 38px; flex-shrink: 0;
+            }
+            .f-toolbar-edit .f-action-menu-btn {
+                width: 38px; height: 38px; font-size: 20px;
+            }
+            .f-toolbar-edit .f-save-btn {
+                width: 38px; height: 38px;
+            }
+            /* The small-paper @media print block and the phone
+               #cddFormPanel .f-form-inner padding are NOT here: both belong
+               to the interlocked late-cascade cluster pinned in
+               responsive.css — the print block must follow the pinned
+               #cddFormPanel paddings, and the 16px form-inner rule is what
+               deadens that print block's 10px by order. See the notes there. */
+        }

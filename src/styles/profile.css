@@ -1,0 +1,148 @@
+        /* === Profile === */
+        .profile-btn { width:36px;height:36px;border-radius:50%;border:2px solid var(--border);background:var(--surface);cursor:pointer;overflow:hidden;padding:0;transition:border-color .2s; }
+        .profile-btn:hover { border-color:var(--primary); }
+        /* Keep the profile dialog open beneath the My Companies tab-form. */
+        .profile-avatar { width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--primary);background:var(--bg);background-size:cover;background-position:center; }
+        .pf-avatar-wrap { position:relative;width:72px;height:72px;border:0;border-radius:50%;margin:0 auto 12px;padding:0;background:transparent;cursor:pointer;overflow:hidden; }
+        .pf-avatar { width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:var(--primary);background:var(--bg);background-size:cover;background-position:center; }
+        .pf-avatar-hover { position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;background:rgba(0,0,0,0.4);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0;transition:opacity .2s; }
+        .pf-avatar-wrap:hover .pf-avatar-hover { opacity:1; }
+        .profile-tab-content { padding:24px 32px; display:grid; gap:20px; }
+        .tf-pending-approval-banner {
+            display:flex; align-items:flex-start; gap:10px; margin:10px max(12px, env(safe-area-inset-left)) 0;
+            padding:11px 13px; border:1px solid color-mix(in srgb, var(--warning, #d97706) 38%, transparent);
+            border-radius:10px; background:color-mix(in srgb, var(--warning, #d97706) 10%, var(--surface, #fff));
+            color:var(--text); font-size:13px; line-height:1.45;
+        }
+        .tf-pending-approval-banner[hidden] { display:none !important; }
+        .tf-pending-approval-icon { color:var(--warning, #d97706); flex:0 0 auto; margin-top:1px; }
+        .tf-pending-approval-copy { min-width:0; flex:1; }
+        .tf-pending-approval-title { display:block; font-weight:700; }
+        .tf-pending-approval-note { display:block; color:var(--text-secondary); margin-top:2px; }
+        .tf-pending-approval-action { flex:0 0 auto; border:0; background:transparent; color:var(--primary); padding:2px 0; font:inherit; font-weight:600; cursor:pointer; }
+        .tf-server-draft-banner {
+            border-color:color-mix(in srgb,var(--primary) 32%,transparent);
+            background:color-mix(in srgb,var(--primary) 8%,var(--surface,#fff));
+        }
+        .tf-server-draft-banner .tf-pending-approval-icon { color:var(--primary); }
+        .f-pending-change-badge { display:inline-flex; align-items:center; margin-inline-start:6px; padding:2px 7px; border-radius:999px; background:#fff7ed; color:#b45309; font-size:11px; font-weight:600; white-space:nowrap; vertical-align:middle; }
+        .f-pending-change-badge.pending-delete { background:#fef2f2; color:#b91c1c; }
+        .pf-change-request-count { display:none; min-width:22px; height:22px; padding:0 7px; align-items:center; justify-content:center; border-radius:999px; background:#fff7ed; color:#b45309; font-size:12px; font-weight:700; line-height:1; }
+        .pf-change-request-count.has-items { display:inline-flex; }
+        .cr-status { display:inline-flex; align-items:center; padding:3px 8px; border-radius:999px; font-size:12px; font-weight:600; white-space:nowrap; }
+        .cr-status.pending { background:#fff7ed; color:#b45309; }
+        .cr-status.applied { background:#ecfdf5; color:#047857; }
+        .cr-status.rejected, .cr-status.cancelled, .cr-status.conflicted { background:#fef2f2; color:#b91c1c; }
+        .cr-detail-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+        .cr-detail-item { min-width:0; }
+        .cr-detail-label { color:var(--text-secondary); font-size:12px; margin-bottom:3px; }
+        .cr-detail-value { font-weight:600; overflow-wrap:anywhere; }
+        .cr-diff-list { display:grid; gap:10px; }
+        .cr-diff-row { border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
+        .cr-diff-field { font-weight:700; margin-bottom:7px; overflow-wrap:anywhere; }
+        .cr-diff-values { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+        .cr-diff-value { min-width:0; padding:8px; border-radius:7px; background:var(--bg, #f8fafc); white-space:pre-wrap; overflow-wrap:anywhere; }
+        .cr-diff-value.proposed { background:#eff6ff; }
+        .cr-terminal-note { grid-column:1/-1; padding:9px 11px; border-radius:8px; background:#fef2f2; color:#991b1b; white-space:pre-wrap; overflow-wrap:anywhere; }
+        .cr-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
+        @media (max-width: 600px) {
+            .cr-detail-grid, .cr-diff-values { grid-template-columns:1fr; }
+            .tf-pending-approval-banner { margin-top:8px; }
+        }
+        /* Profile hero is a full-width banner, not a card. The layered light,
+           offset orbs and raised avatar make it feel deliberate without
+           reintroducing the display name or username. */
+        .pf-hero { position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:194px;text-align:center;margin:-24px -32px 0;padding:0;border:0;border-radius:0;background:radial-gradient(circle at 50% -34%,color-mix(in srgb,var(--primary) 32%,transparent),transparent 53%),linear-gradient(135deg,color-mix(in srgb,var(--primary) 13%,var(--surface)),color-mix(in srgb,var(--primary) 3%,var(--surface)) 54%,var(--surface)); }
+        .pf-hero::before,.pf-hero::after { content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none; }
+        .pf-hero::before { width:230px;height:230px;top:-150px;left:-76px;background:color-mix(in srgb,var(--primary) 14%,transparent);box-shadow:0 0 0 32px color-mix(in srgb,var(--primary) 5%,transparent); }
+        .pf-hero::after { width:150px;height:150px;right:-66px;bottom:-92px;border:1px solid color-mix(in srgb,var(--primary) 22%,transparent);box-shadow:0 0 0 26px color-mix(in srgb,var(--primary) 5%,transparent); }
+        .pf-hero > * { position:relative;z-index:1; }
+        .pf-hero .pf-avatar-wrap { width:104px;height:104px;margin:0;overflow:visible;border-radius:50%;box-shadow:0 15px 30px color-mix(in srgb,var(--primary) 23%,transparent),0 0 0 8px color-mix(in srgb,var(--surface) 72%,transparent);transition:transform .18s ease,box-shadow .18s ease; }
+        .pf-hero .pf-avatar-wrap:hover { transform:translateY(-2px);box-shadow:0 18px 34px color-mix(in srgb,var(--primary) 30%,transparent),0 0 0 8px color-mix(in srgb,var(--surface) 78%,transparent); }
+        .pf-hero .pf-avatar-wrap:focus-visible { outline:3px solid var(--primary);outline-offset:5px; }
+        .pf-hero .pf-avatar { box-sizing:border-box;border:4px solid color-mix(in srgb,var(--surface) 88%,transparent);font-size:36px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--primary) 18%,transparent); }
+        .pf-avatar-edit-badge { position:absolute;right:-3px;bottom:-1px;width:31px;height:31px;display:flex;align-items:center;justify-content:center;border:3px solid var(--surface);border-radius:50%;background:var(--primary);color:#fff;box-shadow:0 4px 10px color-mix(in srgb,var(--primary) 32%,transparent); }
+        .pf-avatar-edit-badge svg { width:15px;height:15px;stroke:currentColor; }
+        .pf-section { display:grid;gap:9px; }
+        .pf-section-title { margin:0;font-size:13px;font-weight:700;color:var(--text-secondary);letter-spacing:.02em; }
+        .pf-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px; }
+        .pf-row { appearance:none;width:100%;min-width:0;display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:10px;align-items:center;padding:13px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s,background .15s; }
+        .pf-row:hover { border-color:color-mix(in srgb,var(--primary) 42%,var(--border));box-shadow:0 3px 10px rgba(0,0,0,.07);background:color-mix(in srgb,var(--primary) 4%,var(--surface)); }
+        .pf-row:active { transform:scale(.985); }
+        .pf-row:focus-visible { outline:2px solid var(--primary);outline-offset:2px; }
+        .pf-row--wide { grid-column:1 / -1; }
+        .pf-row-icon { width:38px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary); }
+        .pf-row-icon svg { width:19px;height:19px;stroke:currentColor; }
+        .pf-row-icon.pf-icon-security { color:#9c6b00;background:#fff6dc; }
+        .pf-row-icon.pf-icon-email { color:#1667a8;background:#e9f5ff; }
+        .pf-row-icon.pf-icon-language { color:#7650b5;background:#f1ebff; }
+        .pf-row-icon.pf-icon-company { color:#15755d;background:#e6f7f1; }
+        .pf-row-icon.pf-icon-admin { color:#965528;background:#fff0e8; }
+        .pf-row-icon.pf-icon-about { color:#365f9d;background:#eaf2ff; }
+        .pf-row-icon.pf-icon-danger { color:var(--risk-high-text);background:#ffe9e9; }
+        .pf-row-copy { min-width:0;display:grid;gap:3px; }
+        /* Identity cards show the actual value first; its field label becomes
+           a quiet secondary caption. Action-only cards keep their main label. */
+        .pf-row-copy:has(.pf-row-value) .pf-row-label { order:2;font-size:12px;font-weight:500;color:var(--text-secondary);line-height:1.25; }
+        .pf-row-copy:has(.pf-row-value) .pf-row-value { order:1;min-width:0;font-size:14px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.25; }
+        .pf-row-arrow { width:18px;height:18px;color:var(--text-secondary);flex-shrink:0; }
+        .pf-about-row-caption { font-size:12px;color:var(--text-secondary);line-height:1.25; }
+        .pf-row--danger { border-color:color-mix(in srgb,var(--risk-high-text) 30%,var(--border)); }
+        .pf-row--danger .pf-row-label { color:var(--risk-high-text); }
+        .pf-about-page { width:100%;max-width:680px;margin:0 auto;display:grid;gap:20px; }
+        .pf-about-intro { display:flex;align-items:center;gap:18px;padding:22px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(135deg,color-mix(in srgb,var(--primary) 9%,var(--surface)),var(--surface) 70%); }
+        .pf-about-logo { width:72px;height:72px;flex:0 0 auto;border-radius:16px;box-shadow:0 9px 22px color-mix(in srgb,var(--primary) 20%,transparent); }
+        .pf-about-heading { min-width:0; }
+        .pf-about-heading h2 { margin:0 0 7px;font-size:21px;color:var(--text); }
+        .pf-about-heading p { margin:0;color:var(--text-secondary);font-size:14px;line-height:1.6; }
+        .pf-about-details { display:grid;gap:0;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden; }
+        .pf-about-detail { display:grid;grid-template-columns:minmax(90px,.4fr) minmax(0,1fr);gap:16px;align-items:start;padding:14px 16px; }
+        .pf-about-detail + .pf-about-detail { border-top:1px solid var(--border); }
+        .pf-about-detail dt { color:var(--text-secondary);font-size:13px; }
+        .pf-about-detail dd { margin:0;color:var(--text);font-size:14px;font-weight:600;overflow-wrap:anywhere; }
+        .pf-about-links { display:flex;gap:10px;flex-wrap:wrap; }
+        .pf-about-link { display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:8px 12px;border:1px solid color-mix(in srgb,var(--primary) 32%,var(--border));border-radius:9px;background:color-mix(in srgb,var(--primary) 5%,var(--surface));color:var(--primary);font-size:13px;font-weight:600;text-decoration:none; }
+        .pf-about-link:hover { border-color:var(--primary);background:color-mix(in srgb,var(--primary) 9%,var(--surface)); }
+        .pf-about-link:focus-visible { outline:2px solid var(--primary);outline-offset:2px; }
+        .pf-about-link svg { width:16px;height:16px;stroke:currentColor; }
+        .set-panel .pf-popup-title { display:flex;align-items:center;gap:10px;min-height:38px;margin-bottom:18px; }
+        .pf-popup-title-icon { width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:9px;background:color-mix(in srgb,var(--primary) 11%,var(--surface));color:var(--primary); }
+        .pf-popup-title-icon svg { width:18px;height:18px;stroke:currentColor; }
+        .pf-popup-title-icon.pf-popup-security { color:#9c6b00;background:#fff6dc; }
+        .pf-popup-title-icon.pf-popup-email { color:#1667a8;background:#e9f5ff; }
+        .pf-popup-title-icon.pf-popup-language { color:#7650b5;background:#f1ebff; }
+        .pf-popup-title-icon.pf-popup-google { color:#4285f4;background:#eaf2ff; }
+        .pf-popup-title-icon.pf-popup-danger { color:var(--risk-high-text);background:#ffe9e9; }
+        .pf-radio-row { display:flex;align-items:center;padding:10px 12px;border-radius:6px;cursor:pointer;font-size:14px; }
+        .pf-radio-row:hover { background:var(--bg); }
+
+        /* ================================================================
+           RESPONSIVE — Mobile & Tablet
+           ================================================================ */
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            .profile-tab-content { padding:16px; gap:16px; }
+            /* The profile panel clears the shared panel padding so its hero can
+               run edge-to-edge. On phones the TabForm chrome is positioned over
+               the content and the shared rule compensates with a top inset — an
+               inset that #id-specificity override also removed, leaving the hero
+               (and with it the avatar) tucked under the header. Re-reserve just
+               the chrome height: .profile-tab-content's own 16px inset is then
+               cancelled by the hero's -16px margin, so the hero lands exactly at
+               the bottom edge of the chrome. */
+            #tfPanel_profile.tf-viewport-form:not(.f-inline) .f-form-inner.tf-body {
+                padding: var(--tf-chrome-height, 0px) 0 0 !important;
+            }
+            .pf-hero { gap:11px;min-height:166px;margin:-16px -16px 0;padding:0; }
+            .pf-hero .pf-avatar-wrap { width:86px;height:86px;box-shadow:0 12px 24px color-mix(in srgb,var(--primary) 23%,transparent),0 0 0 6px color-mix(in srgb,var(--surface) 74%,transparent); }
+            .pf-hero .pf-avatar { font-size:30px; }
+            .pf-avatar-edit-badge { width:28px;height:28px;border-width:2px; }
+            .pf-grid { grid-template-columns:1fr; gap:8px; }
+            .pf-row--wide { grid-column:auto; }
+            .pf-about-page { gap:16px; }
+            .pf-about-intro { align-items:flex-start;padding:18px; }
+            .pf-about-logo { width:58px;height:58px;border-radius:13px; }
+            .pf-about-heading h2 { font-size:18px; }
+            .pf-about-detail { grid-template-columns:1fr;gap:4px;padding:13px 14px; }
+        }

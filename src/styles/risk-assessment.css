@@ -1,0 +1,141 @@
+
+        /* Screening summary display + edit dialog */
+        .f-ss-display {
+            min-height: 42px; padding: 10px 12px; border: 1px dashed var(--border);
+            border-radius: 6px; background: var(--surface);
+            font-size: 13px; line-height: 1.7; color: var(--text);
+            white-space: pre-wrap; word-break: break-word;
+            cursor: pointer; transition: border-color 0.15s, background 0.15s;
+        }
+        .f-ss-display:hover { border-color: var(--primary); background: var(--bg); }
+        .f-ss-display.f-ss-placeholder { color: var(--text-tertiary); font-style: italic; }
+        .f-ss-display.f-ss-locked { cursor: default; opacity: 0.65; pointer-events: none; }
+        .f-ss-display.f-ss-locked:hover { border-color: var(--border); background: var(--surface); }
+        .f-ss-edit-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.35); z-index: 10004; justify-content: center; align-items: center; }
+        .f-ss-edit-overlay.active { display: flex; }
+        .f-ss-edit-box { background: #fff; border-radius: 10px; padding: 20px 24px 16px; min-width: 420px; max-width: 640px; width: 90vw; height: 80vh; display: flex; flex-direction: column; box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+        .f-ss-edit-box h3 { margin: 0 0 12px 0; font-size: 15px; color: #333; flex: 0 0 auto; }
+        .f-ss-edit-box textarea { width: 100%; padding: 10px 12px; border: 1px solid #d0d0d0; border-radius: 6px; font-size: 16px; line-height: 1.6; font-family: inherit; resize: none; flex: 1 1 auto; min-height: 0; box-sizing: border-box; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .f-ss-edit-box textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(37,99,235,0.12); }
+        .f-ss-edit-btns { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; flex: 0 0 auto; }
+        .f-ss-edit-btns button { padding: 7px 20px; border-radius: 5px; border: 1px solid #d0d0d0; font-size: 13px; cursor: pointer; background: #f5f5f5; color: #555; }
+        .f-ss-edit-btns button.f-ss-edit-save { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* Risk Assessment form styles */
+        .ra-cat-score { font-size: 14px; font-weight: 600; padding: 8px 12px; background: var(--bg); border-radius: 6px; border: 1px solid var(--border); }
+        .ra-score-num { font-size: 16px; }
+        .ra-score-large { font-size: 24px; font-weight: 700; }
+        .ra-score-label { display: inline-block; margin-left: 8px; padding: 2px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .ra-overall-score { font-size: 16px; font-weight: 600; padding: 12px 16px; background: var(--bg); border-radius: 8px; border: 2px solid var(--border); text-align: center; }
+        .ra-risk-rating { text-align: center; padding: 8px; }
+        .ra-rating-badge { display: inline-block; padding: 6px 24px; border-radius: 20px; font-size: 16px; font-weight: 700; }
+        .ra-low { background: #d4edda; color: #155724; }
+        .ra-med-low { background: #cce5ff; color: #004085; }
+        .ra-medium { background: #fff3cd; color: #856404; }
+        .ra-med-high { background: #ffe0b2; color: #e65100; }
+        .ra-high { background: #f8d7da; color: #721c24; }
+        .f-hint { font-size: 12px; color: var(--text-tertiary); font-weight: 400; }
+        .ra-history-badge { display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+
+
+	        @keyframes fAiSpin { to { transform: rotate(360deg); } }
+	        .f-ai-status-card {
+	            display:flex; align-items:flex-start; gap:10px; margin:0 0 14px;
+	            padding:11px 13px; border:1px solid #bfdbfe; border-radius:8px;
+	            background:#eff6ff; color:#1e3a5f; font-size:13px; line-height:1.45;
+	        }
+	        .f-ai-status-card.f-ai-status-clear { border-color:#a7f3d0; background:#ecfdf5; color:#065f46; }
+	        .f-ai-status-card.f-ai-status-match { border-color:#fed7aa; background:#fff7ed; color:#9a3412; }
+	        .f-ai-status-card.f-ai-status-incomplete,
+	        .f-ai-status-card.f-ai-status-unknown { border-color:#fde68a; background:#fffbeb; color:#854d0e; }
+	        .f-ai-status-card.f-ai-status-failed { border-color:#fecaca; background:#fef2f2; color:#991b1b; }
+	        .f-ai-status-card .f-ai-spinner { width:16px; height:16px; margin-top:1px; border:2px solid rgba(37,99,235,.2); border-top-color:currentColor; border-radius:50%; animation:fAiSpin .8s linear infinite; flex:0 0 auto; }
+	        .f-ai-status-copy { min-width:0; flex:1; }
+	        .f-ai-status-title { font-weight:650; }
+	        .f-ai-status-detail { margin-top:3px; }
+	        .f-ai-provider-list { display:grid; grid-template-columns:minmax(0,1fr); gap:4px; margin-top:4px; font-size:11px; opacity:.85; }
+	        .f-ai-provider-list > span { min-width:0; overflow-wrap:anywhere; }
+	        .f-ai-status-retry { margin-top:7px; padding:4px 9px; border:1px solid currentColor; border-radius:5px; background:transparent; color:inherit; cursor:pointer; }
+	        @media (prefers-reduced-motion: reduce) {
+	            .f-ai-status-card .f-ai-spinner { animation:none; }
+	        }
+
+        /* Lock form during AI screening — only disable editing, keep scrollable */
+        .f-form-locked { user-select: none; }
+	        .f-form-locked input, .f-form-locked textarea, .f-form-locked select, .f-form-locked button,
+	        .f-form-locked .f-tag, .f-form-locked .f-option-group, .f-form-locked .f-doc-card,
+	        .f-form-locked .f-ilabel { pointer-events: none; opacity: 0.55; }
+	        /* Operational controls are not data edits. Keep the explicit AI
+	           cancellation control usable while every form field is locked. */
+	        .f-form-locked .f-ai-status-card button[data-tf-busy-allowed] { pointer-events: auto; opacity: 1; }
+
+        /* ── Phone (≤768px) ── */
+        @media (max-width: 768px) {
+            /* ---- Risk lists: hierarchy-first cards, without table labels ----
+               Split from one five-list rule that also covered the company lists;
+               the declarations are identical on both sides of the split. */
+            #fRiskListContent .f-list-table tr.f-list-row,
+            #cRiskAssessmentInner .f-list-table tr.f-list-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            /* These cards have fixed left/right pairs.  Grid makes each pair a
+               real row; flex-wrap could merge later pairs when their flexible
+               columns started with a zero flex basis. */
+            #fRiskListContent .f-list-table tr.f-list-row,
+            #cRiskAssessmentInner .f-list-table tr.f-list-row {
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) auto;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row > td,
+            #cRiskAssessmentInner .f-list-table tr.f-list-row > td {
+                order: 99; min-width: 0; box-sizing: border-box; width: auto;
+                border-bottom: none; overflow-wrap: anywhere;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row > td::before,
+            #cRiskAssessmentInner .f-list-table tr.f-list-row > td::before { display: none; }
+
+            /* Global risk: date/status, client/score, then assessor/rating. */
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.date"],
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.date"] {
+                order: 1; padding: 10px 4px 3px 14px; font-weight: 600;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.date"],
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.date"] { grid-column: 1; grid-row: 1; }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.status"],
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.status"] {
+                order: 2; flex: 0 0 auto; padding: 7px 14px 3px 4px; display: flex !important; justify-content: flex-end; align-items: center;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.status"],
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.status"] { grid-column: 2; grid-row: 1; }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.client"] {
+                order: 3; flex: 1 1 0; padding: 3px 4px 5px 14px; font-size: 15px; font-weight: 600;
+                grid-column: 1; grid-row: 2;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.score"] {
+                order: 4; flex: 0 0 auto; padding: 3px 14px 5px 4px; font-size: 17px; font-weight: 700; text-align: right !important; display: block !important;
+                grid-column: 2; grid-row: 2;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.assessor"] {
+                order: 5; flex: 1 1 0; padding: 4px 4px 10px 14px; color: var(--text-secondary); font-size: 13px;
+                grid-column: 1; grid-row: 3;
+            }
+            #fRiskListContent .f-list-table tr.f-list-row td[data-col="risk.list.col.rating"] {
+                order: 6; flex: 0 0 auto; padding: 4px 14px 10px 4px; display: flex !important; justify-content: flex-end; align-items: center;
+                grid-column: 2; grid-row: 3;
+            }
+            /* Client-scoped risk rows have no client column: rating/score occupy
+               the second line and assessor begins the third line on the left. */
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.rating"] {
+                order: 3; flex: 1 1 0; padding: 4px 4px 4px 14px; display: flex !important; align-items: center;
+                grid-column: 1; grid-row: 2;
+            }
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.score"] {
+                order: 4; flex: 0 0 auto; padding: 4px 14px 4px 4px; font-size: 17px; font-weight: 700; text-align: right !important; display: block !important;
+                grid-column: 2; grid-row: 2;
+            }
+            #cRiskAssessmentInner .f-list-table tr.f-list-row td[data-col="risk.list.col.assessor"] {
+                order: 5; flex: 1 1 100%; padding: 4px 14px 10px; color: var(--text-secondary); font-size: 13px;
+                grid-column: 1 / -1; grid-row: 3;
+            }
+        }
