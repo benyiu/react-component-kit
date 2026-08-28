@@ -42,6 +42,24 @@ function ReplacementHarness({ fetchPage, controls }) {
   );
 }
 
+function RefreshHarness({ fetchPage }) {
+  const { content, filter, refresh } = usePagedList({ fetchPage, pageSize: 2, getItemId });
+  useEffect(() => { filter(); }, [filter]);
+  return (
+    <div>
+      <button type="button" onClick={() => filter()}>filter</button>
+      <button type="button" onClick={() => refresh()}>refresh</button>
+      <output data-testid="refresh-loaded">{String(content.loaded)}</output>
+      <output data-testid="refresh-loading">{String(content.loading)}</output>
+      <ul>
+        {content.items.map((item) => (
+          <li key={item.id} data-testid={`refresh-item-${item.id}`}>{item.id}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 describe('usePagedList', () => {
   it('advances by loaded page even when a page has fewer rows than its limit', async () => {
     const fetchPage = vi.fn()
@@ -111,5 +129,51 @@ describe('usePagedList', () => {
       await Promise.resolve();
     });
     expect(screen.getByTestId('replacement-items')).toHaveTextContent('local');
+  });
+
+  it('keeps rendered rows and loaded state during refresh, then replaces page zero', async () => {
+    let resolveRefresh;
+    const fetchPage = vi.fn()
+      .mockResolvedValueOnce({ items: [{ id: 'old' }], total: 1 })
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveRefresh = resolve; }));
+    render(<RefreshHarness fetchPage={fetchPage} />);
+
+    await waitFor(() => expect(screen.getByTestId('refresh-item-old')).toBeInTheDocument());
+    const oldRow = screen.getByTestId('refresh-item-old');
+    fireEvent.click(screen.getByRole('button', { name: 'refresh' }));
+
+    await waitFor(() => expect(fetchPage).toHaveBeenCalledTimes(2));
+    expect(screen.getByTestId('refresh-item-old')).toBe(oldRow);
+    expect(screen.getByTestId('refresh-loaded')).toHaveTextContent('true');
+    expect(screen.getByTestId('refresh-loading')).toHaveTextContent('true');
+
+    await act(async () => {
+      resolveRefresh({ items: [{ id: 'new' }], total: 1 });
+      await Promise.resolve();
+    });
+    expect(screen.queryByTestId('refresh-item-old')).not.toBeInTheDocument();
+    expect(screen.getByTestId('refresh-item-new')).toBeInTheDocument();
+    expect(screen.getByTestId('refresh-loading')).toHaveTextContent('false');
+  });
+
+  it('clears old rows during filter while its page-zero request is pending', async () => {
+    let resolveFilter;
+    const fetchPage = vi.fn()
+      .mockResolvedValueOnce({ items: [{ id: 'old' }], total: 1 })
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveFilter = resolve; }));
+    render(<RefreshHarness fetchPage={fetchPage} />);
+
+    await waitFor(() => expect(screen.getByTestId('refresh-item-old')).toBeInTheDocument());
+    fireEvent.click(screen.getByRole('button', { name: 'filter' }));
+
+    await waitFor(() => expect(fetchPage).toHaveBeenCalledTimes(2));
+    expect(screen.queryByTestId('refresh-item-old')).not.toBeInTheDocument();
+    expect(screen.getByTestId('refresh-loaded')).toHaveTextContent('false');
+
+    await act(async () => {
+      resolveFilter({ items: [{ id: 'filtered' }], total: 1 });
+      await Promise.resolve();
+    });
+    expect(screen.getByTestId('refresh-item-filtered')).toBeInTheDocument();
   });
 });

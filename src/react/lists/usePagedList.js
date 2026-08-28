@@ -26,10 +26,12 @@ function usePagedList({
 
   contentRef.current = content;
 
-  const load = useCallback((reset) => {
+  const load = useCallback((mode) => {
     if (!enabled || typeof fetchPage !== 'function') return Promise.resolve(false);
     const current = contentRef.current;
-    if (!reset && (current.loading || !current.hasMore)) return Promise.resolve(false);
+    const replacingItems = mode !== 'more';
+    const clearsVisibleItems = mode === 'filter';
+    if (!replacingItems && (current.loading || !current.hasMore)) return Promise.resolve(false);
 
     const token = ++requestRef.current;
     if (abortRef.current) abortRef.current.abort();
@@ -38,14 +40,18 @@ function usePagedList({
     // The server cursor is page-based even when a test double (or a filtered
     // response) returns fewer than `pageSize` rows. Use pages loaded rather
     // than the rendered item count so the next request cannot repeat page 0.
-    const page = reset ? 0 : current.pagesLoaded;
+    const page = replacingItems ? 0 : current.pagesLoaded;
     const offset = page * pageSize;
     setContent((previous) => ({
       ...previous,
-      items: reset ? [] : previous.items,
+      // A changed query/sort must clear the old result set immediately. A
+      // refresh, on the other hand, keeps the rendered rows in place until
+      // the replacement page wins, so pull-to-refresh never reconstructs the
+      // list frame just to show its loading state.
+      items: clearsVisibleItems ? [] : previous.items,
       loading: true,
       loadError: null,
-      loaded: reset ? false : previous.loaded,
+      loaded: clearsVisibleItems ? false : previous.loaded,
     }));
 
     let request;
@@ -62,7 +68,7 @@ function usePagedList({
     return Promise.resolve(request).then((result) => {
       if (!mountedRef.current || token !== requestRef.current) return false;
       const incoming = Array.isArray(result && result.items) ? result.items : [];
-      const existing = reset ? [] : contentRef.current.items;
+      const existing = replacingItems ? [] : contentRef.current.items;
       const seen = new Set(existing.map((item, index) => (
         getItemId ? String(getItemId(item, index)) : item
       )));
@@ -90,7 +96,7 @@ function usePagedList({
         loadError: null,
         hasMore: !!hasMore,
         serverTotal: total,
-        pagesLoaded: (reset ? 0 : contentRef.current.pagesLoaded) + 1,
+        pagesLoaded: (replacingItems ? 0 : contentRef.current.pagesLoaded) + 1,
         loaded: true,
       });
       abortRef.current = null;
@@ -104,8 +110,12 @@ function usePagedList({
     });
   }, [acceptItems, enabled, fetchPage, getItemId, pageSize]);
 
-  const filter = useCallback(() => load(true), [load]);
-  const loadMore = useCallback(() => load(false), [load]);
+  // `filter()` is intentionally the destructive reset used after a changed
+  // query or sort. `refresh()` starts from page zero too, but keeps the
+  // current result set mounted until the new response is ready.
+  const filter = useCallback(() => load('filter'), [load]);
+  const refresh = useCallback(() => load('refresh'), [load]);
+  const loadMore = useCallback(() => load('more'), [load]);
 
   // Compatibility caches sometimes receive an authoritative local mutation
   // (for example setData() after a lazy controller opens, or removal after a
@@ -164,7 +174,7 @@ function usePagedList({
     };
   }, []);
 
-  return { content, filter, loadMore, replaceItems };
+  return { content, filter, refresh, loadMore, replaceItems };
 }
 
 export { EMPTY_CONTENT, usePagedList };
